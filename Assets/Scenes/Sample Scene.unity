@@ -1568,6 +1568,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8323956951712022231, guid: ad53ea4a6d96a084391ea42d0347b4d6, type: 3}
+      propertyPath: currentAmmo
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8323956951712022231, guid: ad53ea4a6d96a084391ea42d0347b4d6, type: 3}
       propertyPath: projectileForce
       value: 30
       objectReference: {fileID: 0}
