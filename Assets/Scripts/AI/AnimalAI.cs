@@ -29,6 +29,7 @@ public class AnimalAI : MonoBehaviour
     void Start()
     {
         navMeshAgent =  GetComponent<NavMeshAgent>();
+        Debug.Log(navMeshAgent == null);
         PickNewPatrolPoint();
     }
 
