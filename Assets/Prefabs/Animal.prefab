@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 871388892173223336}
   - component: {fileID: 6387618316326788326}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: AnimalVisuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 8023395645242529996}
   m_Layer: 0
   m_Name: Animal
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,7 +154,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2511555597255629483}
   m_Enabled: 1
   m_AgentTypeID: -902729914
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
