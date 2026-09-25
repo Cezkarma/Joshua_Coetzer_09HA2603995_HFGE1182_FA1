@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     public float lookLimitX;
     private float cameraAngle = 0f;
     private Vector2 lookInput;
-    
+    private bool lookFromMouse;
+    private float yaw;
+
     [Header("CROUCHING")]
     public CapsuleCollider hitbox;
     [SerializeField]
@@ -55,7 +57,11 @@ public class PlayerController : MonoBehaviour
         InputAction.Player.Move.performed += context => moveDirection = context.ReadValue<Vector2>();
         InputAction.Player.Move.canceled += context => moveDirection = Vector2.zero;
         
-        InputAction.Player.Look.performed += context => lookInput = context.ReadValue<Vector2>();
+        InputAction.Player.Look.performed += context =>
+        {
+            lookInput = context.ReadValue<Vector2>();
+            lookFromMouse = context.control.device is Pointer;
+        };
         InputAction.Player.Look.canceled += context => lookInput = Vector2.zero;
 
         InputAction.Player.Jump.performed += OnJump;
@@ -79,6 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        yaw = transform.eulerAngles.y;
     }
 
     // Update is called once per frame
@@ -111,8 +118,9 @@ public class PlayerController : MonoBehaviour
     
     public void LookHandler()
     {
-        float mouseX = lookInput.x * mouseSensitivity * Time.deltaTime;
-        float mouseY = lookInput.y * mouseSensitivity * Time.deltaTime;
+        float scale = lookFromMouse ? 0.01f : Time.deltaTime;
+        float mouseX = lookInput.x * mouseSensitivity * scale;
+        float mouseY = lookInput.y * mouseSensitivity * scale;
         
         
         cameraAngle -= mouseY;
@@ -120,7 +128,8 @@ public class PlayerController : MonoBehaviour
 
         
         playerCamera.transform.localRotation = Quaternion.Euler(cameraAngle, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+        yaw += mouseX;
+        rb.MoveRotation(Quaternion.Euler(0f, yaw, 0f));
     }
     
     private void OnJump(InputAction.CallbackContext context)

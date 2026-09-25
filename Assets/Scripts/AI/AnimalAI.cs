@@ -22,8 +22,12 @@ public class AnimalAI : MonoBehaviour
     [SerializeField] private float areaRadius = 30f;
     
     private Vector3 target;
-    
-    
+
+    [SerializeField] private float repathInterval = 0.25f;
+    private float repathTimer;
+    private bool isIdling;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,8 +49,8 @@ public class AnimalAI : MonoBehaviour
 
         if (Vector3.Distance(transform.position, areaCenter.position) > areaRadius)
         {
-            navMeshAgent.SetDestination(areaCenter.position);
-            
+            SetDestinationThrottled(areaCenter.position);
+
             return;
         }
 
@@ -65,7 +69,11 @@ public class AnimalAI : MonoBehaviour
         {
             case NPCState.Idle:
                 navMeshAgent.isStopped = false;
-                StartCoroutine(IdleFor(1f));
+                if (!isIdling)
+                {
+                    isIdling = true;
+                    StartCoroutine(IdleFor(1f));
+                }
                 break;
             case NPCState.Patrol:
                 PatrolRoutine();
@@ -74,7 +82,7 @@ public class AnimalAI : MonoBehaviour
                 navMeshAgent.isStopped = false;
                 Vector3 directionToTarget = transform.position - playerTransform.position;
                 Vector3 targetPosition = transform.position + directionToTarget.normalized * runawayRange;
-                navMeshAgent.SetDestination(targetPosition);
+                SetDestinationThrottled(targetPosition);
                 break;
             case NPCState.Dead:
                 break;
@@ -111,5 +119,14 @@ public class AnimalAI : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         currentState = NPCState.Patrol;
+        isIdling = false;
+    }
+
+    private void SetDestinationThrottled(Vector3 destination)
+    {
+        repathTimer -= Time.deltaTime;
+        if (repathTimer > 0f) return;
+        repathTimer = repathInterval;
+        navMeshAgent.SetDestination(destination);
     }
 }

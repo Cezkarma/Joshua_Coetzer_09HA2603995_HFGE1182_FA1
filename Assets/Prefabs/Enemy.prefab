@@ -131,6 +131,7 @@ MonoBehaviour:
   damage: 1
   areaCenter: {fileID: 0}
   areaRadius: 25
+  repathInterval: 0.25
 --- !u!114 &4727699282603291218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +147,8 @@ MonoBehaviour:
   damageTags:
   - Arrow
   - Punch
-  health: 10
-  healthMax: 10
+  health: 20
+  healthMax: 20
   doesDecay: 1
   decayTickRate: 120
   decayDamage: 1

@@ -187,6 +187,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   areaCenter: {fileID: 0}
   areaRadius: 30
+  repathInterval: 0.25
 --- !u!114 &8023395645242529996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,8 +205,8 @@ MonoBehaviour:
   - Punch
   health: 10
   healthMax: 10
-  doesDecay: 0
-  decayTickRate: 0
-  decayDamage: 0
-  destroyOnDeath: 0
-  destroyOnDeathDelay: 0
+  doesDecay: 1
+  decayTickRate: 120
+  decayDamage: 1
+  destroyOnDeath: 1
+  destroyOnDeathDelay: 1

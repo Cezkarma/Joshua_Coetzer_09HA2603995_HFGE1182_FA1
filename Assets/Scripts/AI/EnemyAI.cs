@@ -27,8 +27,12 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float areaRadius = 12f;
     
     private Vector3 target;
-    
-    
+
+    [SerializeField] private float repathInterval = 0.25f;
+    private float repathTimer;
+    private bool isIdling;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,8 +59,8 @@ public class EnemyAI : MonoBehaviour
 
         if (Vector3.Distance(transform.position, areaCenter.position) > areaRadius)
         {
-            navMeshAgent.SetDestination(areaCenter.position);
-            
+            SetDestinationThrottled(areaCenter.position);
+
             return;
         }
 
@@ -79,14 +83,18 @@ public class EnemyAI : MonoBehaviour
         {
             case EnemyState.Idle:
                 navMeshAgent.isStopped = false;
-                StartCoroutine(IdleFor(1f));
+                if (!isIdling)
+                {
+                    isIdling = true;
+                    StartCoroutine(IdleFor(1f));
+                }
                 break;
             case EnemyState.Patrol:
                 PatrolRoutine();
                 break;
             case EnemyState.Chase:
                 navMeshAgent.isStopped = false;
-                navMeshAgent.SetDestination(playerTransform.position);
+                SetDestinationThrottled(playerTransform.position);
                 break;
             case EnemyState.Attack:
                 navMeshAgent.isStopped = true;
@@ -134,6 +142,15 @@ public class EnemyAI : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         currentState = EnemyState.Patrol;
+        isIdling = false;
+    }
+
+    private void SetDestinationThrottled(Vector3 destination)
+    {
+        repathTimer -= Time.deltaTime;
+        if (repathTimer > 0f) return;
+        repathTimer = repathInterval;
+        navMeshAgent.SetDestination(destination);
     }
     
     //ATTACK
@@ -144,8 +161,8 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
-        
-        navMeshAgent.SetDestination(playerTransform.position);
+
+        SetDestinationThrottled(playerTransform.position);
     }
 
     public IEnumerator Knockback()
