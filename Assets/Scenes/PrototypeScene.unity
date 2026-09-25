@@ -1122,7 +1122,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 7380c0ff12bb915439f884194244f1c5, type: 2}
-  m_TreeDistance: 5000
+  m_TreeDistance: 200
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
@@ -1134,7 +1134,7 @@ Terrain:
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
-  m_DrawInstanced: 0
+  m_DrawInstanced: 1
   m_DrawTreesAndFoliage: 1
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
@@ -1350,7 +1350,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 54cc8c4c328569e4d9ad3e6a060d3c24, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 5e1c63a7c89c57e4c844ac74b4369dc9, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &222232065234419139
 PrefabInstance:
@@ -1370,7 +1370,7 @@ PrefabInstance:
       objectReference: {fileID: 807960631}
     - target: {fileID: 5787440661786829042, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 81.7
       objectReference: {fileID: 0}
     - target: {fileID: 5787440661786829042, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1378,7 +1378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5787440661786829042, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -74.9
       objectReference: {fileID: 0}
     - target: {fileID: 5787440661786829042, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1414,7 +1414,7 @@ PrefabInstance:
       objectReference: {fileID: 807960631}
     - target: {fileID: 6284402046312254614, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_VersionIndex
-      value: 964
+      value: 970
       objectReference: {fileID: 0}
     - target: {fileID: 8493891326887768598, guid: b02e3a1ca8750e347b8c6a9a64b22fc9, type: 3}
       propertyPath: m_Mesh
