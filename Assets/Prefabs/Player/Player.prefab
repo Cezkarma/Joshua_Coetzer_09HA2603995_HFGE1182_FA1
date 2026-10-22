@@ -687,7 +687,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
@@ -697,6 +698,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5877499132592597239}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6265775958889168326}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3689486232868165352}
@@ -712,12 +716,37 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6577542185657133321}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3624745718661998796}
   m_SourcePrefab: {fileID: 100100000, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
 --- !u!1 &7429537594262920769 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
   m_PrefabInstance: {fileID: 7771643704564949776}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &6265775958889168326
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429537594262920769}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
+  m_Controller: {fileID: 9100000, guid: 74254675c7d0ab04b97fbbd3c820f499, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!136 &3689486232868165352
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -783,7 +812,7 @@ MonoBehaviour:
   walkSpeed: 5
   sprintSpeed: 10
   jumpForce: 10
-  rb: {fileID: 0}
+  rb: {fileID: 3199934661558331355}
   isSprinting: 0
   playerCamera: {fileID: 8922714391551320818}
   mouseSensitivity: 90
@@ -842,6 +871,18 @@ MonoBehaviour:
   decayDamage: 1
   destroyOnDeath: 0
   destroyOnDeathDelay: 0
+--- !u!114 &3624745718661998796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7429537594262920769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761125b3e5c35e943b90e0dbafcba451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7804973142727967995 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1bd728e555574c54a91c65926d3387e6, type: 3}
