@@ -7,35 +7,40 @@ public class AnimalAI : MonoBehaviour
 {
     public enum NPCState { Idle, Patrol, Runaway, Dead }
     [SerializeField] private NPCState currentState = NPCState.Idle;
-    
+
     [Header("AI PARAMETERS")]
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float patrolRange = 4f;
 
-    [Header("DETECTION PARAMETERS")] 
+    [Header("DETECTION PARAMETERS")]
     [SerializeField] private float detectionRange = 10f;
     [SerializeField] private float runawayRange = 20f;
     [SerializeField] private Transform playerTransform;
 
-    [Header("AREA RESTRICTION")] 
+    [Header("AREA RESTRICTION")]
     [SerializeField] private Transform areaCenter;
     [SerializeField] private float areaRadius = 30f;
-    
-    private Vector3 target;
 
-    [SerializeField] private float repathInterval = 0.25f;
-    private float repathTimer;
-    private bool isIdling;
+    private Vector3 target;
+    private Animator anim;
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        navMeshAgent =  GetComponent<NavMeshAgent>();
-        Debug.Log(navMeshAgent == null);
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         PickNewPatrolPoint();
     }
+
+    #region BostonCity Campus
+    /* This code is property of Boston City Campus, and should not be used, or copied for any other subject.
+     If you would copy and or use this in an assessment outside the assessment that this was supplied for
+     action will be taken against you for plaigirism.
+    */
+    #endregion
+
 
     // Update is called once per frame
     void Update()
@@ -44,12 +49,12 @@ public class AnimalAI : MonoBehaviour
         {
             return;
         }
-        
+
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         if (Vector3.Distance(transform.position, areaCenter.position) > areaRadius)
         {
-            SetDestinationThrottled(areaCenter.position);
+            navMeshAgent.SetDestination(areaCenter.position);
 
             return;
         }
@@ -58,46 +63,44 @@ public class AnimalAI : MonoBehaviour
         {
             currentState = NPCState.Runaway;
         }
-        
+
         StateHandler();
     }
 
     public void StateHandler()
     {
-      
+
         switch (currentState)
         {
             case NPCState.Idle:
                 navMeshAgent.isStopped = false;
-                if (!isIdling)
-                {
-                    isIdling = true;
-                    StartCoroutine(IdleFor(1f));
-                }
+                StartCoroutine(IdleFor(1f));
                 break;
             case NPCState.Patrol:
                 PatrolRoutine();
                 break;
             case NPCState.Runaway:
                 navMeshAgent.isStopped = false;
+                anim.SetBool("isIdle", false);
                 Vector3 directionToTarget = transform.position - playerTransform.position;
                 Vector3 targetPosition = transform.position + directionToTarget.normalized * runawayRange;
-                SetDestinationThrottled(targetPosition);
+                navMeshAgent.SetDestination(targetPosition);
                 break;
             case NPCState.Dead:
                 break;
         }
     }
-    
+
     //PATROL
 
     public void PatrolRoutine()
     {
         navMeshAgent.isStopped = false;
-
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < .5f)
+        anim.SetBool("isIdle", false);
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < .05f)
         {
-            PickNewPatrolPoint();
+            currentState = NPCState.Idle;
+
         }
     }
 
@@ -105,7 +108,7 @@ public class AnimalAI : MonoBehaviour
     {
         Vector3 randomDirection = Random.insideUnitSphere * patrolRange;
         randomDirection += areaCenter.position;
-        
+
         NavMeshHit hit;
 
         if (NavMesh.SamplePosition(randomDirection, out hit, patrolRange, NavMesh.AllAreas))
@@ -117,16 +120,9 @@ public class AnimalAI : MonoBehaviour
 
     public IEnumerator IdleFor(float time)
     {
+        anim.SetBool("isIdle", true);
         yield return new WaitForSeconds(time);
+        PickNewPatrolPoint();
         currentState = NPCState.Patrol;
-        isIdling = false;
-    }
-
-    private void SetDestinationThrottled(Vector3 destination)
-    {
-        repathTimer -= Time.deltaTime;
-        if (repathTimer > 0f) return;
-        repathTimer = repathInterval;
-        navMeshAgent.SetDestination(destination);
     }
 }

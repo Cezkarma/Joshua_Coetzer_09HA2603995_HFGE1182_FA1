@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class ShootHandler : MonoBehaviour
 {
     private PlayerInputActions InputAction;
-    
+
     [Header("ACTIONS")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float projectileForce;
@@ -16,9 +16,9 @@ public class ShootHandler : MonoBehaviour
     [SerializeField] private float maxChargeTime = 1f;
     private bool isCharging = false;
     private float chargeTime = 0f;
-    
+
     [SerializeField] private GameObject punchHitBox;
-    
+
     [SerializeField] private int currentAmmo;
     [SerializeField] private int maxAmmo;
     [SerializeField] private int totalAmmo;
@@ -28,13 +28,22 @@ public class ShootHandler : MonoBehaviour
     [SerializeField] private float defaultCamFOV;
     [SerializeField] private float zoomCamFOV;
     private bool isZooming;
-    
-    
+
+    private PlayerAnimationHandler animationHandler;
+
     private void Awake()
     {
         InputAction = new PlayerInputActions();
+        animationHandler = GetComponent<PlayerAnimationHandler>();
         cam = Camera.main;
     }
+
+    #region BostonCity Campus
+    /* This code is property of Boston City Campus, and should not be used, or copied for any other subject.
+     If you would copy and or use this in an assessment outside the assessment that this was supplied for
+     action will be taken against you for plaigirism.
+    */
+    #endregion
 
     private void Start()
     {
@@ -65,6 +74,7 @@ public class ShootHandler : MonoBehaviour
     {
         ZoomIn();
         ChargeShot();
+        animationHandler.SetCurrentAmmo(currentAmmo); //Animation Call
     }
 
     public void ChargeShot()
@@ -81,6 +91,7 @@ public class ShootHandler : MonoBehaviour
     private void OnBeginShoot(InputAction.CallbackContext context)
     {
         isCharging = true;
+        animationHandler.OnBeginShoot(); //Animation Call
     }
 
     public void OnShoot(InputAction.CallbackContext context)
@@ -99,24 +110,26 @@ public class ShootHandler : MonoBehaviour
         }
 
         currentAmmo--;
-        
+
         if (projectilePrefab != null && projectileSpawn != null)
         {
+            animationHandler.Shoot(); //Animation Call
             GameObject projectile = Instantiate(projectilePrefab, projectileSpawn.position, projectileSpawn.rotation);
             Rigidbody rb = projectile.GetComponent<Rigidbody>();
             rb.AddForce(projectile.gameObject.transform.forward * projectileForce * chargeTime, ForceMode.Impulse);
             isCharging = false;
         }
-      
+
     }
 
     public IEnumerator PunchObject()
     {
         punchHitBox.SetActive(true);
+        animationHandler.OnBeginShoot();//Animation Call
         yield return new WaitForSecondsRealtime(.5f);
         punchHitBox.SetActive(false);
     }
-    
+
     private void OnReload(InputAction.CallbackContext context)
     {
         if (totalAmmo < maxAmmo)
@@ -129,6 +142,7 @@ public class ShootHandler : MonoBehaviour
             totalAmmo -= maxAmmo;
             currentAmmo = maxAmmo;
         }
+
     }
 
     private void ZoomIn()
@@ -136,25 +150,47 @@ public class ShootHandler : MonoBehaviour
         if (isZooming)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, zoomCamFOV, .1f);
+            animationHandler.SetIsAiming(true);
         }
         else
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, defaultCamFOV, .1f);
+            animationHandler.SetIsAiming(false);
         }
     }
-    
+
     private void OnAim(InputAction.CallbackContext context)
     {
         isZooming = true;
     }
-    
+
     private void OnAimCanceled(InputAction.CallbackContext context)
     {
         isZooming = false;
     }
-    
+
     public void AddAmmo(int amount)
     {
         totalAmmo += amount;
+    }
+
+    public void SetCurrentAmmo(int amount)
+    {
+        currentAmmo = amount;
+    }
+
+    public void SetTotalAmmo(int amount)
+    {
+        totalAmmo = amount;
+    }
+
+    public int GetCurrentAmmo()
+    {
+        return currentAmmo;
+    }
+
+    public int GetTotalAmmo()
+    {
+        return totalAmmo;
     }
 }

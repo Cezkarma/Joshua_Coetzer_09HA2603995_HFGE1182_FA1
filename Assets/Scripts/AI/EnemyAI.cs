@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
 {
     public enum EnemyState { Idle, Patrol, Chase, Attack, Dead }
     [SerializeField] private EnemyState currentState = EnemyState.Idle;
-    
+
     [Header("AI PARAMETERS")]
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float detectionRange = 10f;
@@ -18,29 +18,34 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float knockbackForce = 5f;
     private Rigidbody rb;
 
-    [Header("ATTACK PARAMETERS")] 
+    [Header("ATTACK PARAMETERS")]
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float damage;
 
-    [Header("AREA RESTRICTION")] 
+    [Header("AREA RESTRICTION")]
     [SerializeField] private Transform areaCenter;
     [SerializeField] private float areaRadius = 12f;
-    
-    private Vector3 target;
 
-    [SerializeField] private float repathInterval = 0.25f;
-    private float repathTimer;
-    private bool isIdling;
+    private Vector3 target;
+    private Animator anim;
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        navMeshAgent =  GetComponent<NavMeshAgent>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         PickNewPatrolPoint();
     }
+
+    #region BostonCity Campus
+    /* This code is property of Boston City Campus, and should not be used, or copied for any other subject.
+     If you would copy and or use this in an assessment outside the assessment that this was supplied for
+     action will be taken against you for plaigirism.
+    */
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -49,17 +54,17 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
-        
+
         if (navMeshAgent.enabled == false)
         {
             return;
         }
-        
+
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         if (Vector3.Distance(transform.position, areaCenter.position) > areaRadius)
         {
-            SetDestinationThrottled(areaCenter.position);
+            navMeshAgent.SetDestination(areaCenter.position);
 
             return;
         }
@@ -72,29 +77,28 @@ public class EnemyAI : MonoBehaviour
         {
             currentState = EnemyState.Chase;
         }
-        
+
         StateHandler();
     }
 
     public void StateHandler()
     {
-      
+
         switch (currentState)
         {
             case EnemyState.Idle:
                 navMeshAgent.isStopped = false;
-                if (!isIdling)
-                {
-                    isIdling = true;
-                    StartCoroutine(IdleFor(1f));
-                }
+                anim.SetFloat("Velocity", 0f);
+                StartCoroutine(IdleFor(2f));
                 break;
             case EnemyState.Patrol:
                 PatrolRoutine();
+                anim.SetFloat("Velocity", .5f);
                 break;
             case EnemyState.Chase:
                 navMeshAgent.isStopped = false;
-                SetDestinationThrottled(playerTransform.position);
+                navMeshAgent.SetDestination(playerTransform.position);
+                anim.SetFloat("Velocity", 1f);
                 break;
             case EnemyState.Attack:
                 navMeshAgent.isStopped = true;
@@ -105,7 +109,7 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
-    
+
     //PATROL
 
     public void PatrolRoutine()
@@ -115,12 +119,13 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
-        
+
         navMeshAgent.isStopped = false;
 
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < .5f)
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < .05f)
         {
-            PickNewPatrolPoint();
+            currentState = EnemyState.Idle;
+
         }
     }
 
@@ -128,7 +133,7 @@ public class EnemyAI : MonoBehaviour
     {
         Vector3 randomDirection = Random.insideUnitSphere * patrolRange;
         randomDirection += areaCenter.position;
-        
+
         NavMeshHit hit;
 
         if (NavMesh.SamplePosition(randomDirection, out hit, patrolRange, NavMesh.AllAreas))
@@ -141,18 +146,10 @@ public class EnemyAI : MonoBehaviour
     public IEnumerator IdleFor(float time)
     {
         yield return new WaitForSeconds(time);
+        PickNewPatrolPoint();
         currentState = EnemyState.Patrol;
-        isIdling = false;
     }
 
-    private void SetDestinationThrottled(Vector3 destination)
-    {
-        repathTimer -= Time.deltaTime;
-        if (repathTimer > 0f) return;
-        repathTimer = repathInterval;
-        navMeshAgent.SetDestination(destination);
-    }
-    
     //ATTACK
 
     public void AttackRoutine()
@@ -161,8 +158,8 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
-
-        SetDestinationThrottled(playerTransform.position);
+        anim.SetTrigger("Attack");
+        navMeshAgent.SetDestination(playerTransform.position);
     }
 
     public IEnumerator Knockback()
@@ -170,15 +167,15 @@ public class EnemyAI : MonoBehaviour
         navMeshAgent.enabled = false;
         rb.isKinematic = false;
         rb.useGravity = true;
-        
-        Vector3 forceDirection = (transform.position - target).normalized;
-        forceDirection.y = 0.5f; 
 
-        
+        Vector3 forceDirection = (transform.position - target).normalized;
+        forceDirection.y = 0.5f;
+
+
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(forceDirection * knockbackForce, ForceMode.Impulse);
         yield return new WaitForSeconds(1f);
-        
+
         navMeshAgent.enabled = true;
         rb.isKinematic = true;
         rb.useGravity = false;

@@ -11,21 +11,31 @@ public class HealthHandler : MonoBehaviour
     [SerializeField] private string[] damageTags;
     [SerializeField] private float health;
     [SerializeField] private float healthMax;
-    
+
     [Header("DECAY PARAMETERS")]
     [SerializeField] private bool doesDecay = false;
     [SerializeField] private float decayTickRate;
     [SerializeField] private float decayDamage;
-    
+
     [Header("DEATH PARAMETERS")]
     [SerializeField] private bool destroyOnDeath;
     [SerializeField] private float destroyOnDeathDelay;
-    
+
+    private Animator anim;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        anim = GetComponent<Animator>();
         health = healthMax;
     }
+
+    #region BostonCity Campus
+    /* This code is property of Boston City Campus, and should not be used, or copied for any other subject.
+     If you would copy and or use this in an assessment outside the assessment that this was supplied for
+     action will be taken against you for plaigirism.
+    */
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -34,7 +44,7 @@ public class HealthHandler : MonoBehaviour
         {
             StartCoroutine(DecayHealth());
         }
-        
+
         if (health <= 0)
         {
             DeathHandler();
@@ -43,7 +53,7 @@ public class HealthHandler : MonoBehaviour
 
     private IEnumerator DecayHealth()
     {
-        yield  return new WaitForSeconds(decayTickRate);
+        yield return new WaitForSeconds(decayTickRate);
         DamageHandler(decayDamage);
     }
 
@@ -59,7 +69,7 @@ public class HealthHandler : MonoBehaviour
             {
                 health = 0;
             }
-            
+
         }
     }
 
@@ -91,12 +101,33 @@ public class HealthHandler : MonoBehaviour
     {
         if (destroyOnDeath)
         {
-            Destroy(gameObject);
+            anim.SetTrigger("Death"); //Animation Call
+            Destroy(gameObject, destroyOnDeathDelay);
         }
         else
         {
             this.gameObject.SetActive(false);
         }
+    }
+
+    public void SetHealth(float health)
+    {
+        this.health = health;
+    }
+
+    public void SetMaxHealth(float healthMax)
+    {
+        this.healthMax = healthMax;
+    }
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    public float GetMaxHealth()
+    {
+        return healthMax;
     }
 
 }
