@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 4269202221545255194}
   - component: {fileID: 8023395645242529996}
   m_Layer: 0
-  m_Name: Animal
+  m_Name: Animal_old
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
