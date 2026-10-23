@@ -101,7 +101,9 @@ public class HealthHandler : MonoBehaviour
     {
         if (destroyOnDeath)
         {
-            anim.SetTrigger("Death"); //Animation Call
+            if (anim != null)
+                anim.SetTrigger("Death"); //Animation Call
+
             Destroy(gameObject, destroyOnDeathDelay);
         }
         else

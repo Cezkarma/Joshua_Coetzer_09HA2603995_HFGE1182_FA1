@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ab5dd03da6b496d408cde8e261f9794a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 46.162117
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab5dd03da6b496d408cde8e261f9794a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.29
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab5dd03da6b496d408cde8e261f9794a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -130.46643
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ab5dd03da6b496d408cde8e261f9794a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 627c8b9212028ca408ec642bb876e403, type: 2}
+    - target: {fileID: 6545606029846306988, guid: ab5dd03da6b496d408cde8e261f9794a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: fe1f492c0090cfb41ace3e4fe22667e5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -194,8 +198,8 @@ MonoBehaviour:
   - Punch
   health: 20
   healthMax: 20
-  doesDecay: 1
-  decayTickRate: 120
+  doesDecay: 0
+  decayTickRate: 120000
   decayDamage: 1
   destroyOnDeath: 1
   destroyOnDeathDelay: 1

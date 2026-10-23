@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 50.859993
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.289
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -128.54063
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8541321748233824047, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8e82b4ab4b82b6748af3b270fc0eb052, type: 2}
     - target: {fileID: 919132149155446097, guid: 1fbcaea2f9e0cf1439b91f1e70393fb3, type: 3}
       propertyPath: m_Name
       value: Sheep
@@ -162,8 +166,8 @@ MonoBehaviour:
   - Punch
   health: 10
   healthMax: 10
-  doesDecay: 1
-  decayTickRate: 120
+  doesDecay: 0
+  decayTickRate: 120000
   decayDamage: 1
   destroyOnDeath: 1
   destroyOnDeathDelay: 1
